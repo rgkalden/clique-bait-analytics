@@ -73,3 +73,34 @@ CREATE TABLE campaign_analysis AS (
 );
 
 SELECT * FROM campaign_analysis;
+
+-- Overall campaign metrics
+
+SELECT
+	impression,
+	click,
+	COUNT(DISTINCT visit_id) AS total_visits,
+	COUNT(DISTINCT user_id) AS total_users,
+	SUM(page_views) AS total_views,
+	SUM(cart_adds) AS total_cart_adds,
+	SUM(purchase) AS total_purchases,
+	SUM(purchase) / COUNT(DISTINCT visit_id) :: float * 100 AS purchase_visit_ratio
+FROM campaign_analysis
+GROUP BY impression, click;
+
+
+-- campaign comparison
+
+SELECT
+	campaign_name,
+	COUNT(DISTINCT visit_id) AS total_visits,
+	COUNT(DISTINCT user_id) AS total_users,
+	SUM(page_views) AS total_views,
+	SUM(cart_adds) AS total_cart_adds,
+	SUM(purchase) AS total_purchases,
+	SUM(purchase) / COUNT(DISTINCT visit_id) :: float * 100 AS purchase_visit_ratio,
+	SUM(cart_adds)/ SUM(page_views) :: float * 100 AS cart_conversion_ratio,
+	SUM(purchase) / SUM(cart_adds) :: float * 100 AS purchase_conversion_ratio
+FROM campaign_analysis
+GROUP BY campaign_name
+ORDER BY purchase_visit_ratio DESC;
