@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+st.set_page_config(page_title="Product Funnel Analysis", page_icon="📊", layout='wide')
+
 
 # # Product Funnel Analysis
 
@@ -27,11 +29,17 @@ st.header('Funnel by Individual Product')
 
 # Plot Product Data
 
-fig_product_funnel_counts = px.bar(product_funnel, x="page_name", y=product_funnel.columns[3:7])
-st.write(fig_product_funnel_counts)
+tab1, tab2 = st.tabs(['Event Counts', 'Conversion Rates'])
 
-fig_product_funnel_conversions = px.bar(product_funnel, x="page_name", y=product_funnel.columns[7:])
-st.write(fig_product_funnel_conversions)
+with tab1:
+
+    fig_product_funnel_counts = px.bar(product_funnel, x="page_name", y=product_funnel.columns[3:7])
+    st.plotly_chart(fig_product_funnel_counts, use_container_width=True)
+
+with tab2:
+
+    fig_product_funnel_conversions = px.bar(product_funnel, x="page_name", y=product_funnel.columns[7:])
+    st.plotly_chart(fig_product_funnel_conversions, use_container_width=True)
 
 # Metrics
 
@@ -53,7 +61,7 @@ col3.metric('Most Purchases', most_purchases)
 most_abandons = product_funnel.iloc[product_funnel['abandoned_in_cart'].argmax()]['page_name']
 col4.metric('Most Cart Abandons', most_abandons)
 
-col5, col6 = st.columns(2)
+col5, col6, col7 = st.columns(3)
 
 # Conversion Rate View to Cart
 avg_conversion_view_to_cart = product_funnel['conversion_view_to_cart'].mean()
@@ -63,12 +71,16 @@ col5.metric('Conversion Rate View to Cart', str(round(avg_conversion_view_to_car
 avg_conversion_cart_to_purchase = product_funnel['conversion_cart_to_purchase'].mean()
 col6.metric('Conversion Rate Cart to Purchase', str(round(avg_conversion_cart_to_purchase, 1)) + '%')
 
+# Conversion Rate Cart to Purchase
+avg_conversion_view_to_purchase = product_funnel['view_purchase_percent'].mean()
+col7.metric('Conversion Rate View to Purchase', str(round(avg_conversion_view_to_purchase, 1)) + '%')
+
 
 st.header('Funnel by Product Category')
 
 # Plot Category Data
 fig_category_funnel = px.bar(category_funnel, x="product_category", y=category_funnel.columns[1:])
-st.write(fig_category_funnel)
+st.plotly_chart(fig_category_funnel, use_container_width=True)
 
 
 

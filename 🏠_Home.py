@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-st.set_page_config(page_title="Clique Bait Product Analytics", page_icon="🐟")
+st.set_page_config(page_title="Clique Bait Product Analytics", page_icon="🐟", layout='wide')
 
 st.title('Clique Bait Product Analytics 🐟')
 
@@ -53,7 +53,7 @@ view_checkout_no_purchase = events_products.groupby('visit_id').sum()[['viewed_c
 st.header('Event Timeline')
 
 fig_event_timeline = px.line(event_timeline, x='date', y=event_timeline.columns[1:])
-st.write(fig_event_timeline)
+st.plotly_chart(fig_event_timeline, use_container_width=True)
 
 # Add shading to show when marketing campaigns occur
 # Half Off - Treat Your Shelf(ish)
@@ -65,10 +65,9 @@ st.write(fig_event_timeline)
 st.header('Event Summary')
 
 event_summary = events_products.groupby('event_name').count()['user_id'].reset_index().rename(columns={'user_id':'Count'}).sort_values('Count', ascending=False)
-#st.write(event_summary)
 
 fig_event_summary = px.bar(event_summary, x='event_name', y='Count')
-st.write(fig_event_summary)
+st.plotly_chart(fig_event_summary, use_container_width=True)
 
 
 # Metrics
