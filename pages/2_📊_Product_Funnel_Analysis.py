@@ -25,7 +25,18 @@ product_funnel['view_purchase_percent'] = product_funnel['purchased_from_cart'] 
 product_funnel['conversion_view_to_cart'] = product_funnel['n_added_to_cart'] / product_funnel['n_page_views'] * 100
 product_funnel['conversion_cart_to_purchase'] = product_funnel['purchased_from_cart'] / product_funnel['n_added_to_cart'] * 100
 
-st.header('Funnel by Individual Product')
+
+# Process Category Data
+
+# Purchases / Views Percentage
+category_funnel['view_purchase_percent'] = category_funnel['total_purchased'] / category_funnel['total_page_view'] * 100
+
+# Conversion Rates
+category_funnel['conversion_view_to_cart'] = category_funnel['total_added_to_cart'] / category_funnel['total_page_view'] * 100
+category_funnel['conversion_cart_to_purchase'] = category_funnel['total_purchased'] / category_funnel['total_added_to_cart'] * 100
+
+
+st.header('Individual Products')
 
 # Plot Product Data
 
@@ -76,13 +87,53 @@ avg_conversion_view_to_purchase = product_funnel['view_purchase_percent'].mean()
 col7.metric('Conversion Rate View to Purchase', str(round(avg_conversion_view_to_purchase, 1)) + '%')
 
 
-st.header('Funnel by Product Category')
+st.header('Product Categories')
 
 # Plot Category Data
-fig_category_funnel = px.bar(category_funnel, x="product_category", y=category_funnel.columns[1:])
-st.plotly_chart(fig_category_funnel, use_container_width=True)
+
+tab3, tab4 = st.tabs(['Event Counts', 'Conversion Rates'])
+
+with tab3:
+
+    fig_category_funnel = px.bar(category_funnel, x="product_category", y=category_funnel.columns[1:5])
+    st.plotly_chart(fig_category_funnel, use_container_width=True)
+
+with tab4:
+
+    fig_category_funnel_conversions = px.bar(category_funnel, x="product_category", y=category_funnel.columns[5:])
+    st.plotly_chart(fig_category_funnel_conversions, use_container_width=True)
 
 
+# Metrics
 
+col5, col6, col7, col8 = st.columns(4)
 
+# Most viewed
+most_viewed = category_funnel.iloc[category_funnel['total_page_view'].argmax()]['product_category']
+col5.metric('Most Viewed', most_viewed)
 
+# Most cart adds
+most_adds = category_funnel.iloc[category_funnel['total_added_to_cart'].argmax()]['product_category']
+col6.metric('Most Cart Adds', most_viewed)
+
+# Most purchases
+most_purchases = category_funnel.iloc[category_funnel['total_purchased'].argmax()]['product_category']
+col7.metric('Most Purchases', most_purchases)
+
+# Most Abandons
+most_abandons = category_funnel.iloc[category_funnel['total_abandoned'].argmax()]['product_category']
+col8.metric('Most Cart Abandons', most_abandons)
+
+col9, col10, col11 = st.columns(3)
+
+# Conversion Rate View to Cart
+avg_conversion_view_to_cart = category_funnel['conversion_view_to_cart'].mean()
+col9.metric('Conversion Rate View to Cart', str(round(avg_conversion_view_to_cart, 1)) + '%')
+
+# Conversion Rate Cart to Purchase
+avg_conversion_cart_to_purchase = category_funnel['conversion_cart_to_purchase'].mean()
+col10.metric('Conversion Rate Cart to Purchase', str(round(avg_conversion_cart_to_purchase, 1)) + '%')
+
+# Conversion Rate Cart to Purchase
+avg_conversion_view_to_purchase = category_funnel['view_purchase_percent'].mean()
+col11.metric('Conversion Rate View to Purchase', str(round(avg_conversion_view_to_purchase, 1)) + '%')
