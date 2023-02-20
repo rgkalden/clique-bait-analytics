@@ -73,33 +73,35 @@ campaign_comparison['total_purchases_per_day'] = campaign_comparison['total_purc
 
 # Plot
 
-fig = px.bar(campaign_analysis, x="Campaign Scenario", y=campaign_analysis.columns[2:7])
+st.header('Campaign Effectiveness')
+
+fig_effectiveness = px.bar(campaign_analysis, x="Campaign Scenario", y=campaign_analysis.columns[2:7])
+
+st.plotly_chart(fig_effectiveness, use_container_width=True)
+
+st.subheader('Purchase/Visit Ratio')
+
+col1, col2, col3 = st.columns(3)
+col1.metric('No Campaign', str(round(campaign_analysis[['Campaign Scenario', 'purchase_visit_ratio']].iloc[0][1], 1)) + '%')
+col2.metric('Ad Impression, No Click', str(round(campaign_analysis[['Campaign Scenario', 'purchase_visit_ratio']].iloc[1][1], 1)) + '%')
+col3.metric('Ad Impression, Ad Click', str(round(campaign_analysis[['Campaign Scenario', 'purchase_visit_ratio']].iloc[2][1], 1)) + '%')
 
 
+st.header('Campaign Comparison')
 
-fig = px.bar(campaign_analysis, x="Campaign Scenario", y=campaign_analysis.columns[10:])
+tab1, tab2, tab3 = st.tabs(['Overall Events', 'Events per day', 'Conversion Rates'])
 
+with tab1:
+    fig_overall = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[1:6])
+    st.plotly_chart(fig_overall, use_container_width=True)
 
+with tab2:
+    fig_per_day = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[10:])
+    st.plotly_chart(fig_per_day, use_container_width=True)
 
-# metrics purchase_visit_ratio No campaign
-
-#campaign_analysis[['Campaign Scenario', 'purchase_visit_ratio']].iloc[0][1]
-
-
-
-
-
-
-
-fig = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[1:6])
-
-
-
-fig = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[10:])
-
-
-
-fig = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[6:9])
+with tab3:
+    fig_rates = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[6:9])
+    st.plotly_chart(fig_rates, use_container_width=True)
 
 
 
