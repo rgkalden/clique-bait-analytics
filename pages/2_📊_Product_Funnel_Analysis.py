@@ -74,6 +74,10 @@ col4.metric('Most Cart Abandons', most_abandons)
 
 col5, col6, col7 = st.columns(3)
 
+# Conversion Rate Cart to Purchase
+avg_conversion_view_to_purchase = product_funnel['view_purchase_percent'].mean()
+col7.metric('Conversion Rate View to Purchase', str(round(avg_conversion_view_to_purchase, 1)) + '%')
+
 # Conversion Rate View to Cart
 avg_conversion_view_to_cart = product_funnel['conversion_view_to_cart'].mean()
 col5.metric('Conversion Rate View to Cart', str(round(avg_conversion_view_to_cart, 1)) + '%')
@@ -82,9 +86,6 @@ col5.metric('Conversion Rate View to Cart', str(round(avg_conversion_view_to_car
 avg_conversion_cart_to_purchase = product_funnel['conversion_cart_to_purchase'].mean()
 col6.metric('Conversion Rate Cart to Purchase', str(round(avg_conversion_cart_to_purchase, 1)) + '%')
 
-# Conversion Rate Cart to Purchase
-avg_conversion_view_to_purchase = product_funnel['view_purchase_percent'].mean()
-col7.metric('Conversion Rate View to Purchase', str(round(avg_conversion_view_to_purchase, 1)) + '%')
 
 
 st.header('Product Categories')
