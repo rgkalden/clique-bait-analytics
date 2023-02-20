@@ -103,5 +103,6 @@ with tab3:
     fig_rates = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[6:9])
     st.plotly_chart(fig_rates, use_container_width=True)
 
+st.subheader('Campaign Details')
 
-
+st.write(campaign_identifier[campaign_identifier.columns[2:]])
