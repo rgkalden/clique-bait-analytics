@@ -52,12 +52,30 @@ view_checkout_no_purchase = events_products.groupby('visit_id').sum()[['viewed_c
 
 st.header('Event Timeline')
 
-fig_event_timeline = px.line(event_timeline, x='date', y=event_timeline.columns[1:])
-st.plotly_chart(fig_event_timeline, use_container_width=True)
+campaign_options = st.sidebar.multiselect('Select which campaigns to highlight', 
+                                 ['BOGOF - Fishing For Compliments',
+                                  '25% Off - Living The Lux Life',
+                                  'Half Off - Treat Your Shellf(ish)'],
+                                  ['BOGOF - Fishing For Compliments',
+                                  '25% Off - Living The Lux Life',
+                                  'Half Off - Treat Your Shellf(ish)'])
+
+#fig_event_timeline = px.line(event_timeline, x='date', y=event_timeline.columns[1:])
+#st.plotly_chart(fig_event_timeline, use_container_width=True)
 
 # Add shading to show when marketing campaigns occur
 # Half Off - Treat Your Shelf(ish)
 #fig.add_vrect(x0='2020-02-01', x1='2020-03-31', line_width=0, fillcolor="red", opacity=0.2)
+
+fig_event_timeline = px.line(event_timeline, x='date', y=event_timeline.columns[1:])
+if 'BOGOF - Fishing For Compliments' in campaign_options:
+    fig_event_timeline.add_vrect(x0='2020-01-01', x1='2020-01-14', line_width=0, fillcolor="red", opacity=0.2, annotation_text='BOGOF - Fishing For Compliments')
+if '25% Off - Living The Lux Life' in campaign_options:
+    fig_event_timeline.add_vrect(x0='2020-01-15', x1='2020-01-28', line_width=0, fillcolor="blue", opacity=0.2, annotation_text='25% Off - Living The Lux Life', annotation_position='top left')
+if 'Half Off - Treat Your Shellf(ish)' in campaign_options:
+    fig_event_timeline.add_vrect(x0='2020-02-01', x1='2020-03-31', line_width=0, fillcolor="green", opacity=0.2, annotation_text='Half Off - Treat Your Shellf(ish)')
+st.plotly_chart(fig_event_timeline, use_container_width=True)
+
 
 
 # Event Summary
