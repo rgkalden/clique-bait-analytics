@@ -103,6 +103,18 @@ with tab3:
     fig_rates = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[6:9])
     st.plotly_chart(fig_rates, use_container_width=True)
 
+col4, col5, col6, col7 = st.columns(4)
+
+col4.metric('Days without Campaign', (total_num_days - days_campaign))
+col5.metric('Days with Campaign', days_campaign)
+
+total_ppd_no_campaign = campaign_comparison[campaign_comparison['campaign_name'] == 'No Campaign']['total_purchases_per_day'].sum()
+total_ppd_campaign = campaign_comparison[campaign_comparison['campaign_name'] != 'No Campaign']['total_purchases_per_day'].sum()
+
+col6.metric('Total Purchases per day During Campaign', 
+            round(total_ppd_campaign - total_ppd_no_campaign),
+            delta=str(round((total_ppd_campaign - total_ppd_no_campaign) / total_ppd_no_campaign *100)) + '%')
+
 st.subheader('Campaign Details')
 
 st.write(campaign_identifier[campaign_identifier.columns[2:]])
