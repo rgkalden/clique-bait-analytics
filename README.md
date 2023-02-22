@@ -1,3 +1,5 @@
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rgkalden-clique-bait-analytics--home-nxgy7x.streamlit.app/)
+
 # Clique Bait Product Analytics 🐟
 
 Welcome to the Clique Bait Product Analytics App!
