@@ -73,13 +73,13 @@ campaign_comparison['total_purchases_per_day'] = campaign_comparison['total_purc
 
 # Plot
 
-st.header('Campaign Impact')
+st.header('Campaign Impact on Conversion')
 
 fig_effectiveness = px.bar(campaign_analysis, x="Campaign Scenario", y=campaign_analysis.columns[2:7])
 
 st.plotly_chart(fig_effectiveness, use_container_width=True)
 
-st.subheader('Purchase/Visit Ratio')
+st.subheader('Purchase/Visit Conversion Ratio')
 
 col1, col2, col3 = st.columns(3)
 col1.metric('No Campaign', str(round(campaign_analysis[['Campaign Scenario', 'purchase_visit_ratio']].iloc[0][1], 1)) + '%')
