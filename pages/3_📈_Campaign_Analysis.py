@@ -73,7 +73,7 @@ campaign_comparison['total_purchases_per_day'] = campaign_comparison['total_purc
 
 # Plot
 
-st.header('Campaign Effectiveness')
+st.header('Campaign Impact')
 
 fig_effectiveness = px.bar(campaign_analysis, x="Campaign Scenario", y=campaign_analysis.columns[2:7])
 
@@ -89,15 +89,15 @@ col3.metric('Ad Impression, Ad Click', str(round(campaign_analysis[['Campaign Sc
 
 st.header('Campaign Comparison')
 
-tab1, tab2, tab3 = st.tabs(['Overall Events', 'Events per day', 'Conversion Rates'])
+tab1, tab2, tab3 = st.tabs(['Events per day', 'Overall Events', 'Conversion Rates'])
 
 with tab1:
-    fig_overall = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[1:6])
-    st.plotly_chart(fig_overall, use_container_width=True)
-
-with tab2:
     fig_per_day = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[10:])
     st.plotly_chart(fig_per_day, use_container_width=True)
+
+with tab2:
+    fig_overall = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[1:6])
+    st.plotly_chart(fig_overall, use_container_width=True)
 
 with tab3:
     fig_rates = px.bar(campaign_comparison, x='campaign_name', y=campaign_comparison.columns[6:9])
@@ -109,11 +109,18 @@ col4.metric('Days without Campaign', (total_num_days - days_campaign))
 col5.metric('Days with Campaign', days_campaign)
 
 total_ppd_no_campaign = campaign_comparison[campaign_comparison['campaign_name'] == 'No Campaign']['total_purchases_per_day'].sum()
-total_ppd_campaign = campaign_comparison[campaign_comparison['campaign_name'] != 'No Campaign']['total_purchases_per_day'].sum()
+total_ppd_campaign = campaign_comparison[campaign_comparison['campaign_name'] != 'No Campaign']['total_purchases_per_day'].mean()
 
-col6.metric('Total Purchases per day During Campaign', 
-            round(total_ppd_campaign - total_ppd_no_campaign),
+col6.metric('Average Purchases per Day', 
+            round(total_ppd_campaign),
             delta=str(round((total_ppd_campaign - total_ppd_no_campaign) / total_ppd_no_campaign *100)) + '%')
+
+visits_per_day_no_campaign = campaign_comparison[campaign_comparison['campaign_name'] == 'No Campaign']['total_visits_per_day'].sum()
+visits_per_day_campaign = campaign_comparison[campaign_comparison['campaign_name'] != 'No Campaign']['total_visits_per_day'].mean()
+
+col7.metric('Average Visits Per Day',
+            round(visits_per_day_no_campaign),
+            delta = str(round((visits_per_day_campaign - visits_per_day_no_campaign) / visits_per_day_no_campaign *100)) + '%')
 
 st.subheader('Campaign Details')
 
