@@ -39,3 +39,17 @@ Based on the insights gathered from the app, some recomendations can be made:
 
 1. Continue to target campaigns towards the products that people desire, like Shellfish, and do not neglect the power of campaign for boosting purchases in other weaker performing product categories.
 2. Investigate further into why customers are dropping out of the product funnel. There is an opportunity to increase the number of cart adds after a product view, and the number of purchases from the cart as well. Possible reasons could be page design, product descriptions, or product images for example.
+
+## Technical Details
+
+Raw data for this app is stored in a postgres database, setup with the schema file `sql/create_schema.sql`. A schema diagram is provided as `case study 6.png`.
+
+Other SQL files in the `sql` folder contain queries to generate data sets used within the app. The data sets are saved in csv format into the `data` folder. Data pipelines written in Python are built into the script files for each streamlit app page.
+
+In order to run the streamlit app locally, the following terminal command is used:
+
+```
+streamlit run 🏠_Home.py
+```
+
+To deploy the app on the web, the `requirements.txt` file has been used.
